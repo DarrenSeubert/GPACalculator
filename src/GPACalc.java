@@ -10,7 +10,7 @@ public class GPACalc {
   /**
    * Main method that runs the GPA Calcualtor
    * 
-   * @param args
+   * @param args Not used in this program
    */
   public static void main(String[] args) {   
     boolean hasValidCurrentGPA = false;
@@ -28,7 +28,7 @@ public class GPACalc {
 
     Scanner scnr = new Scanner(System.in);
     
-    do {
+    do { // Total Credits Prompt
       System.out.println("Enter Total Credits Prior to this Semester:");
       if (scnr.hasNextInt()) {
         totalPreviousCredits = scnr.nextInt();
@@ -48,7 +48,7 @@ public class GPACalc {
       }
     } while (!hasValidTotalCredits);
 
-    while (!hasValidCurrentGPA && totalPreviousCredits > 0) {
+    while (!hasValidCurrentGPA && totalPreviousCredits > 0) { // Current Cumulative GPA Prompt
       System.out.println("Enter Current Cumulative GPA:");
       if (scnr.hasNextDouble()) {
         previousCumulativeGPA = scnr.nextDouble();
@@ -67,7 +67,7 @@ public class GPACalc {
       }
     }
 
-    do {
+    do { // Number of Classes for Current Semester Prompt
       System.out.println("Enter Number of Classes for Current Semester:");
       if (scnr.hasNextInt()) {
         numClasses = scnr.nextInt();
@@ -92,8 +92,8 @@ public class GPACalc {
     String[] classNames = new String[numClasses];
     String tempString = "";
 
-    for (int i = 0; i < numClasses; i++) {
-      do {
+    for (int i = 0; i < numClasses; i++) { // For The Number of Classes The User Entered
+      do { // Enter Class Name Prompt
         System.out.println("Enter Class #" + (i + 1) + " Name:");
         tempString = scnr.nextLine().trim();
 
@@ -108,7 +108,7 @@ public class GPACalc {
       hasValidClassName = false;
       tempString = "";
 
-      do {
+      do { // Enter Class Credits Prompt
         System.out.println("Enter Class #" + (i + 1) + " Credits:");
         if (scnr.hasNextInt()) {
           classCredits = scnr.nextInt();
@@ -128,7 +128,7 @@ public class GPACalc {
 
       hasValidCreditNumber = false;
 
-      do {
+      do { // Enter Class Letter Grade Prompt
         System.out.println("Enter Class #" + (i + 1) + " Letter Grade:");
         tempString = scnr.nextLine().trim().toUpperCase();
 
@@ -154,12 +154,12 @@ public class GPACalc {
 
     double[] GPAs = new double[numClasses];
 
-    while (!hasReceivedEnter) {
+    while (!hasReceivedEnter) { // Output Results and Update Until Enter
       GPAs = convertLetterGradesToGPAs(letterGrades);
       printClasses(classNames, letterGrades);
       calculateSemesterAndCumulativeGPA(totalPreviousCredits, previousCumulativeGPA, credits, GPAs);
 
-      do {
+      do { // Remprompt for Last Entered Class's Letter Grade
         System.out
             .println("Enter New Letter Grade for " + classNames[numClasses - 1] + " (Press Enter to Exit):");
         tempString = scnr.nextLine().trim().toUpperCase();
@@ -216,7 +216,8 @@ public class GPACalc {
       } else if (letterGrades[i] == 'F') {
         GPAs[i] = Constants.F;
       } else {
-        throw new IllegalArgumentException("Error: The char array letterGrades had a invalid value");
+        throw new IllegalArgumentException("Error: The char array letterGrades had a invalid " +
+          "value at index: " + i);
       }
     }
     return GPAs;

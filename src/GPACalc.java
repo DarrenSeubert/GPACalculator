@@ -269,7 +269,13 @@ public class GPACalc {
     System.out.println("______________________________________________________");
 
     for (int i = 0; i < classNames.length; i++) {
-      System.out.println(classNames[i] + ": " + letterGrades[i]);
+      if (letterGrades[i] == '@') {
+        System.out.println(classNames[i] + ": AB");
+      } else if (letterGrades[i] == '#') {
+        System.out.println(classNames[i] + ": BC");
+      } else {
+        System.out.println(classNames[i] + ": " + letterGrades[i]);
+      }
     }
   }
 }

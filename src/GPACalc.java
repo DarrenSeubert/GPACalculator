@@ -159,7 +159,7 @@ public class GPACalc {
       printClasses(classNames, letterGrades);
       calculateSemesterAndCumulativeGPA(totalPreviousCredits, previousCumulativeGPA, credits, GPAs);
 
-      do { // Remprompt for Last Entered Class's Letter Grade
+      do { // Remprompt for Last Entered Class's Letter Grade TODO make it so user can say what class to reprompt
         System.out
             .println("Enter New Letter Grade for " + classNames[numClasses - 1] + " (Press Enter to Exit):");
         tempString = scnr.nextLine().trim().toUpperCase();

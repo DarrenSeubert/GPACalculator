@@ -215,7 +215,7 @@ public class GPACalc {
   }
 
   /**
-   * Method that converts the inputted letter grades to GPA values
+   * Function that converts the inputted letter grades to GPA values
    * 
    * @param letterGrades Array of letter grades represented as chars to be converted
    * @return Array of doubles representing each of the classes letter grade's GPA value
@@ -248,7 +248,7 @@ public class GPACalc {
   }
 
   /**
-   * Method that calculates the semester and cumulative GPA and prints it to the console
+   * Function that calculates the semester and cumulative GPA and prints it to the console
    * 
    * @param totalPreviousCredits The number of previous credits graded on the transcript
    * @param previousCumulativeGPA The previous cumulative GPA earned on the transcript
@@ -285,7 +285,7 @@ public class GPACalc {
   }
 
   /**
-   * Method that prints out all entered classes and their letter grades.
+   * Function that prints out all entered classes and their letter grades.
    * 
    * @param classNames The array of class names entered by the user
    * @param letterGrades Them array of letter grades entered by the user

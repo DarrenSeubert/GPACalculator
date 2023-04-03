@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class GPACalc {
 
   /**
-   * Main method that runs the GPA Calcualtor
+   * Main method that runs the GPA Calculator
    * 
    * @param args Not used in this program
    */

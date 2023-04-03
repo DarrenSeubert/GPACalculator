@@ -16,14 +16,20 @@ public class GPACalc {
     boolean hasValidInput = false;
     boolean hasReceivedEnter = false;
     double previousCumulativeGPA = 0.0;
-    int classIndex;
     int totalPreviousCredits;
-    int classCredits;
     int numClasses;
+    String tempString;
+    int classCredits;
+    int classIndex;
+    
+    String[] classNames;
+    int[] credits;
+    char[] letterGrades;
+    double[] GPAs;
 
     Scanner scnr = new Scanner(System.in);
     
-    do { // Total Credits Prompt
+    do { // Total Credits Prior to Semester Prompt
       System.out.println("Enter Total Credits (GPA Units) Prior to this Semester:");
       if (scnr.hasNextInt()) {
         totalPreviousCredits = scnr.nextInt();
@@ -44,7 +50,7 @@ public class GPACalc {
     } while (!hasValidInput);
     hasValidInput = false;
 
-    while (!hasValidInput && totalPreviousCredits > 0) { // Current Cumulative GPA Prompt
+    while (totalPreviousCredits > 0 && !hasValidInput) { // Current Cumulative GPA Prompt
       System.out.println("Enter Current Cumulative GPA:");
       if (scnr.hasNextDouble()) {
         previousCumulativeGPA = scnr.nextDouble();
@@ -84,10 +90,11 @@ public class GPACalc {
     } while (!hasValidInput);
     hasValidInput = false;
 
-    char[] letterGrades = new char[numClasses];
-    int[] credits = new int[numClasses];
-    String[] classNames = new String[numClasses];
-    String tempString = "";
+    classNames = new String[numClasses];
+    credits = new int[numClasses];
+    letterGrades = new char[numClasses];
+    GPAs = new double[numClasses];
+    tempString = "";
 
     for (int i = 0; i < numClasses; i++) { // For The Number of Classes The User Entered
       do { // Enter Class Name Prompt
@@ -146,33 +153,32 @@ public class GPACalc {
       tempString = "";
     }
 
-    double[] GPAs = new double[numClasses];
-
-    while (!hasReceivedEnter) { // Output Results and Update Until Enter
+    do { // Output Results and Prompt for Update Until Enter
       GPAs = convertLetterGradesToGPAs(letterGrades);
       printClasses(classNames, letterGrades);
       calculateSemesterAndCumulativeGPA(totalPreviousCredits, previousCumulativeGPA, credits, GPAs);
 
       do {
         System.out.println("Enter a Class Index to Edit Grade (Press Enter to Exit):");
+        
         tempString = scnr.nextLine().trim();
+        try {
+          classIndex = Integer.parseInt(tempString) - 1;
 
-        if (tempString.equals("")) {
-          System.out.println("Work Harder");
-          classIndex = -1;
-          hasValidInput = true;
-          hasReceivedEnter = true;
-        } else {
-          try {
-            classIndex = Integer.parseInt(tempString) - 1;
-
-            if (classIndex < 0 || classIndex >= classNames.length) {
-              System.out.println("Error, invalid entry");
-            } else {
-              hasValidInput = true;
-            }
-          } catch (NumberFormatException e) {
+          if (classIndex < 0 || classIndex >= numClasses) {
+            System.out.println("Error, invalid entry");
             classIndex = -1;
+          } else {
+            hasValidInput = true;
+          }
+        } catch (NumberFormatException e) {
+          classIndex = -1;
+
+          if (tempString.equals("")) {
+            System.out.println("Work Harder");
+            hasValidInput = true;
+            hasReceivedEnter = true;
+          } else {
             System.out.println("Error, invalid entry");
           }
         }
@@ -204,7 +210,7 @@ public class GPACalc {
         }
       } while (!hasValidInput);
       hasValidInput = false;
-    }
+    } while (!hasReceivedEnter);
 
     scnr.close();
   }

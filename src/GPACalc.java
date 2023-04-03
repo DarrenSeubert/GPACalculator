@@ -13,15 +13,10 @@ public class GPACalc {
    * @param args Not used in this program
    */
   public static void main(String[] args) {   
-    boolean hasValidCurrentGPA = false;
-    boolean hasValidTotalCredits = false;
-    boolean hasValidNumClasses = false;
-    boolean hasValidCreditNumber = false;
+    boolean hasValidInput = false;
     boolean hasReceivedEnter = false;
-    boolean hasValidNewLetterGrade = false;
-    boolean hasValidClassName = false;
-    boolean hasValidLetterGrade = false;
     double previousCumulativeGPA = 0.0;
+    int classIndex = -1;
     int totalPreviousCredits;
     int classCredits;
     int numClasses;
@@ -39,16 +34,17 @@ public class GPACalc {
           scnr.nextLine();
         } else {
           scnr.nextLine();
-          hasValidTotalCredits = true;
+          hasValidInput = true;
         }
       } else {
         System.out.println("Error, invalid entry");
         totalPreviousCredits = 0;
         scnr.nextLine();
       }
-    } while (!hasValidTotalCredits);
+    } while (!hasValidInput);
+    hasValidInput = false;
 
-    while (!hasValidCurrentGPA && totalPreviousCredits > 0) { // Current Cumulative GPA Prompt
+    while (!hasValidInput && totalPreviousCredits > 0) { // Current Cumulative GPA Prompt
       System.out.println("Enter Current Cumulative GPA:");
       if (scnr.hasNextDouble()) {
         previousCumulativeGPA = scnr.nextDouble();
@@ -58,7 +54,7 @@ public class GPACalc {
           System.out.println("Error, invalid entry");
           previousCumulativeGPA = 0.0;
         } else {
-          hasValidCurrentGPA = true;
+          hasValidInput = true;
         }
       } else {
         System.out.println("Error, invalid entry");
@@ -66,6 +62,7 @@ public class GPACalc {
         scnr.nextLine();
       }
     }
+    hasValidInput = false;
 
     do { // Number of Classes for Current Semester Prompt
       System.out.println("Enter Number of Classes for Current Semester:");
@@ -74,7 +71,7 @@ public class GPACalc {
         scnr.nextLine();
 
         if (numClasses > 0) {
-          hasValidNumClasses = true;
+          hasValidInput = true;
         } else {
           System.out.println("Error, invalid entry");
         }
@@ -84,8 +81,8 @@ public class GPACalc {
         numClasses = 0;
         scnr.nextLine();
       }
-    } while (!hasValidNumClasses);
-
+    } while (!hasValidInput);
+    hasValidInput = false;
 
     char[] letterGrades = new char[numClasses];
     int[] credits = new int[numClasses];
@@ -99,13 +96,12 @@ public class GPACalc {
 
         if (!tempString.equals("")) {
           classNames[i] = tempString;
-          hasValidClassName = true;
+          hasValidInput = true;
         } else {
           System.out.println("Error, invalid entry");
         }
-      } while (!hasValidClassName);
-
-      hasValidClassName = false;
+      } while (!hasValidInput);
+      hasValidInput = false;
       tempString = "";
 
       do { // Enter Class Credits Prompt
@@ -118,15 +114,14 @@ public class GPACalc {
             System.out.println("Error, invalid entry");
           } else {
             credits[i] = classCredits;
-            hasValidCreditNumber = true;
+            hasValidInput = true;
           }
         } else {
           System.out.println("Error, invalid entry");
           scnr.nextLine();
         }
-      } while (!hasValidCreditNumber);
-
-      hasValidCreditNumber = false;
+      } while (!hasValidInput);
+      hasValidInput = false;
 
       do { // Enter Class Letter Grade Prompt
         System.out.println("Enter Class #" + (i + 1) + " Letter Grade:");
@@ -134,21 +129,20 @@ public class GPACalc {
 
         if (tempString.equals("AB")) {
           letterGrades[i] = '@';
-          hasValidLetterGrade = true;
+          hasValidInput = true;
         } else if (tempString.equals("BC")) {
           letterGrades[i] = '#';
-          hasValidLetterGrade = true;
+          hasValidInput = true;
         } else if ((tempString.length() == 1) && (tempString.charAt(0) == 'A'
             || tempString.charAt(0) == 'B' || tempString.charAt(0) == 'C'
             || tempString.charAt(0) == 'D' || tempString.charAt(0) == 'F')) {
           letterGrades[i] = tempString.charAt(0);
-          hasValidLetterGrade = true;
+          hasValidInput = true;
         } else {
           System.out.println("Error, invalid entry");
         }
-      } while (!hasValidLetterGrade);
-
-      hasValidLetterGrade = false;
+      } while (!hasValidInput);
+      hasValidInput = false;
       tempString = "";
     }
 
@@ -159,32 +153,55 @@ public class GPACalc {
       printClasses(classNames, letterGrades);
       calculateSemesterAndCumulativeGPA(totalPreviousCredits, previousCumulativeGPA, credits, GPAs);
 
-      do { // Remprompt for Last Entered Class's Letter Grade TODO make it so user can say what class to reprompt
-        System.out
-            .println("Enter New Letter Grade for " + classNames[numClasses - 1] + " (Press Enter to Exit):");
+      while (!hasValidInput) {
+        System.out.println("Enter a Class Index to Edit Grade (Press Enter to Exit):");
+        tempString = scnr.nextLine().trim();
+
+        if (tempString.equals("")) {
+          System.out.println("Work Harder");
+          hasValidInput = true;
+          hasReceivedEnter = true;
+        } else {
+          try {
+            classIndex = Integer.parseInt(tempString) - 1;
+
+            if (classIndex < 0 || classIndex >= classNames.length) {
+              System.out.println("Error, invalid entry");
+            } else {
+              hasValidInput = true;
+            }
+          } catch (NumberFormatException e) {
+            System.out.println("Error, invalid entry");
+          }
+        }
+      }
+      hasValidInput = false;
+      tempString = "";
+
+      if (hasReceivedEnter) {
+        break;
+      }
+
+      do { // Reprompt for Selected Class's Letter Grade
+        System.out.println("Enter a New Letter Grade for " + classNames[classIndex] + ":");
         tempString = scnr.nextLine().trim().toUpperCase();
 
         if (tempString.equals("AB")) {
-          letterGrades[numClasses - 1] = '@';
-          hasValidNewLetterGrade = true;
+          letterGrades[classIndex] = '@';
+          hasValidInput = true;
         } else if (tempString.equals("BC")) {
-          letterGrades[numClasses - 1] = '#';
-          hasValidNewLetterGrade = true;
+          letterGrades[classIndex] = '#';
+          hasValidInput = true;
         } else if ((tempString.length() == 1) && (tempString.charAt(0) == 'A'
             || tempString.charAt(0) == 'B' || tempString.charAt(0) == 'C'
             || tempString.charAt(0) == 'D' || tempString.charAt(0) == 'F')) {
-          letterGrades[numClasses - 1] = tempString.charAt(0);
-          hasValidNewLetterGrade = true;
-        } else if (tempString.equals("")) {
-          System.out.println("Work Harder");
-          hasValidNewLetterGrade = true;
-          hasReceivedEnter = true;
+          letterGrades[classIndex] = tempString.charAt(0);
+          hasValidInput = true;
         } else {
           System.out.println("Error, invalid entry");
         }
-      } while (!hasValidNewLetterGrade);
-
-      hasValidNewLetterGrade = false;
+      } while (!hasValidInput);
+      hasValidInput = false;
     }
 
     scnr.close();
@@ -271,11 +288,11 @@ public class GPACalc {
 
     for (int i = 0; i < classNames.length; i++) {
       if (letterGrades[i] == '@') {
-        System.out.println(classNames[i] + ": AB");
+        System.out.println((i + 1) + ") " + classNames[i] + ": AB");
       } else if (letterGrades[i] == '#') {
-        System.out.println(classNames[i] + ": BC");
+        System.out.println((i + 1) + ") " + classNames[i] + ": BC");
       } else {
-        System.out.println(classNames[i] + ": " + letterGrades[i]);
+        System.out.println((i + 1) + ") " + classNames[i] + ": " + letterGrades[i]);
       }
     }
   }

@@ -6,7 +6,6 @@ import java.util.Scanner;
  * @author Darren Seubert
  */
 public class GPACalc {
-
   /**
    * Main method that runs the GPA Calculator
    * 

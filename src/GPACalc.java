@@ -174,7 +174,7 @@ public class GPACalc {
           classIndex = -1;
 
           if (tempString.equals("")) {
-            System.out.println("Work Harder");
+            System.out.println("We Done");
             hasValidInput = true;
             hasReceivedEnter = true;
           } else {

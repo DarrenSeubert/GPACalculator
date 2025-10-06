@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run GPACalc",
+            "request": "launch",
+            "mainClass": "GPACalc",
+            "cwd": "${workspaceFolder}/src",
+            "console": "integratedTerminal"
+        }
+    ]
+}

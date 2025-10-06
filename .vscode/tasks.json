@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build GPACalculator Jar",
+			"type": "shell",
+			"command": "cd src; Get-ChildItem -Filter *.java | ForEach-Object { javac $_.Name }; jar cfm GPACalculator.jar manifest.txt *.class; Remove-Item *.class",
+			"isBackground": false,
+			"group": "build"
+		}
+	]
+}

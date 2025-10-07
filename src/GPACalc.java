@@ -29,7 +29,7 @@ public class GPACalc {
     Scanner scnr = new Scanner(System.in);
     
     do { // Total Credits Prior to Semester Prompt
-      System.out.println("Enter Total Credits (GPA Units) Prior to this Semester:");
+      System.out.println("Enter Total GPA Credits (GPA Units) Prior to this Semester:");
       if (scnr.hasNextInt()) {
         totalPreviousCredits = scnr.nextInt();
 
